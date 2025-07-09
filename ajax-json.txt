@@ -1,0 +1,35 @@
+1. SUBMIT BOOKING (AJAX TANPA JSON)
+fetch("submit_booking.php", {
+    method: "POST",
+    body: formData
+})
+Data diambil dari form HTML (FormData(this))
+Dikirim ke submit_booking.php via POST.
+Server PHP akan proses data ini  simpan ke database.
+Responsenya berupa text biasa (bukan JSON), makanya di-handle pakai .text():
+.then(response => response.text())
+Kalau success, tampilkan alert, reset form, dan redirect.
+
+2. GET REVIEWS (AJAX + JSON)
+fetch("get_reviews.php")
+    .then(response => response.json())
+    .then(data => {
+        // tampilkan data ke UI
+    });
+JavaScript minta data ke get_reviews.php.
+PHP-nya akan kirim data review dalam format JSON array:
+.then(response => response.json()) artinya kita parsing data JS
+
+3. SUBMIT REVIEW (AJAX + JSON RESPONSE)
+fetch("submit_review.php", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `name=${encodeURIComponent(name)}&review=${encodeURIComponent(review)}`
+})
+.then(response => response.json())
+Nama dan review dikirim ke submit_review.php pakai AJAX (tanpa reload).
+Format data dikirim seperti form biasa (application/x-www-form-urlencoded).
+Setelah itu, server mengirim respon json
+Maka review langsung ditampilkan di atas halaman (tanpa reload), dengan tambahan “Just now”.
